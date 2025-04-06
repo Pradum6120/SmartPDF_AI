@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
 import generatePDFSummery from "@/actions/upload-actions";
 
+
 const uploadSchema = z.object({
   file: z
     .instanceof(File, { message: "File is required" })
@@ -28,7 +29,7 @@ export default function UploadForm() {
       alert("error occurred while uploading");
     },
     onUploadBegin: ({ file }) => {
-      console.log("upload has begun for", file);
+      alert("upload has begun for", file);
     },
   });
 
@@ -51,7 +52,7 @@ export default function UploadForm() {
 
     //validate the fields
 
-    const validateFields = uploadSchema.safeParse({ file: selectedFile }); // success or error
+    const validateFields = uploadSchema.safeParse({ file: selectedFile! }); // success or error
 
     if (!validateFields.success) {
       console.log(
@@ -61,23 +62,18 @@ export default function UploadForm() {
     }
 
     //upload the file to uploadthing
-    const resp = await startUpload([selectedFile]);
-    if (!resp) {
-      return;
+    const resp = await startUpload([selectedFile!]);
+    try {
+      const result = await generatePDFSummery(resp);
+    console.log(result)
+    } catch (error) {
+      console.log("error in upload-form",error)
     }
 
-    // parse the pdf using { langchain }
-    const result = await generatePDFSummery(resp);
-
-    const { data = null, message = null } = result || {};
-
-    if (data) {
-      //toast({ title: "saving pdf", description : "hang tight! we are saving your summary!"})
-    }
-    //summarize the pdf using Ai
-    //save the summary to the database
-    //REDIRECT TO THE SUMMARY PAGE
+    
   };
+
+  //const { data = null, message = null } = result || {};
   return (
     <form
       ref={formRef}
@@ -89,6 +85,7 @@ export default function UploadForm() {
         type="file"
         accept=".pdf"
         className="border border-gray-300 p-2 rounded"
+        onChange={handleFileChange}
       />
       <button
         type="submit"

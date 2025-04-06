@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 
 export interface IPdfSummary extends Document {
-       user_id : mongoose.Types.ObjectId,
+       user_id : string,
        original_file_url: string,
        summary_text: string,
        status?: string,
@@ -15,8 +15,7 @@ export interface IPdfSummary extends Document {
 
 const PdfSummarySchema = new Schema<IPdfSummary>({
    user_id : {
-      type :  Schema.Types.ObjectId,
-      ref: "User",
+      type : String,
       required: true
 
    },
@@ -31,7 +30,7 @@ const PdfSummarySchema = new Schema<IPdfSummary>({
 
 
 
-const pdfSummaryModel = (mongoose.models.Pdfsummary as mongoose.Model<IPdfSummary> )|| mongoose.model<IPdfSummary>("PdfSummary" ,PdfSummarySchema)
+const pdfSummaryModel = mongoose.models.PdfSummary as mongoose.Model<IPdfSummary> || mongoose.model<IPdfSummary>("PdfSummary" ,PdfSummarySchema)
 
 
 export default  pdfSummaryModel

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.12.12",
     "@google/generative-ai": "^0.24.0",
     "@langchain/community": "^0.3.38",
     "@langchain/core": "^0.3.43",
@@ -20,6 +21,7 @@
     "mongoose": "^8.13.1",
     "next": "15.2.4",
     "pdf-parse": "^1.1.1",
+    "razorpay": "^2.9.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.1.0",

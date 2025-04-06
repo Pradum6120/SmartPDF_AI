@@ -2,17 +2,22 @@
 
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 import { generateSummeryFromOpenAI } from "@/lib/openai";
-//import { generatePDFSummeryFromGemini } from "@/lib/gemini"; // ✅ Ensure this is correctly imported
+import { generatePDFSummeryGemini } from "@/lib/gemini";
+import { connectToDatabase } from "@/lib/db";
+import pdfSummaryModel from "@/models/pdfModels";
+import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-export default async function generatePDFSummery(uploadResponse: {
-  serverData: {
-    userId: string;
-    file: {
-      url: string;
-      name: string;
-    };
+export interface IUploadResponse {
+  userId: string,
+  file: {
+    name: string,
+    url: string,
   };
-}) {
+}
+
+export default async function generatePDFSummery(uploadResponse: any[]) {
+
   if (!uploadResponse) {
     return {
       success: false,
@@ -21,40 +26,41 @@ export default async function generatePDFSummery(uploadResponse: {
     };
   }
 
-  // ✅ Corrected destructuring (removed `[0]` since uploadResponse is an object)
-  const {
-    serverData: {
-      userId,
-      file: { url: pdfUrl, name: fileName },
-    },
-  } = uploadResponse;
+  const firstFile = uploadResponse[0]; 
+  const userId = firstFile?.serverData?.userId;
+  const fileObject = firstFile?.serverData?.file;
+
+  const fileName = fileObject?.name;
+  const pdfUrl = fileObject?.ufsUrl;
 
   if (!pdfUrl) {
     return {
       success: false,
-      message: "No file uploaded",
+      message: "No file uploaded/url",
       data: null,
     };
   }
 
   try {
-    // ✅ Extract text from PDF
+    
+    // Extract Pdf Using LangChain 
     const pdfText = await fetchAndExtractPdfText(pdfUrl);
-    console.log(pdfText);
+    console.log("Extracted pdf text", pdfText)
+   
 
     let summary;
 
     try {
-      // ✅ Generate summary using OpenAI
+      // Generating summary of pdf text using OpenAI
       summary = await generateSummeryFromOpenAI(pdfText);
       console.log({ summary });
     } catch (error) {
       console.log(error);
 
       if (error instanceof Error && error.message === "RATE_LIMIT_EXCEEDED") {
+         // Generating summary of odf using Gemini 
         try {
-          // ✅ Fallback to Gemini AI if OpenAI fails
-          //summary = await generatePDFSummeryFromGemini(pdfText);
+          summary = await generatePDFSummeryGemini(pdfText);
         } catch (geminiError) {
           console.error(
             "Gemini API failed after OpenAI quota exceeded",
@@ -71,6 +77,40 @@ export default async function generatePDFSummery(uploadResponse: {
         data: null,
       };
     }
+
+
+    // save pdf to database
+
+    try {
+    await connectToDatabase() 
+     const { userId } = await auth()
+     console.log('userid typessss' ,typeof(userId))
+
+     if(!userId){
+           return {
+             success: false,
+             message: "user not found"
+           }
+     }
+     const NewSummary = new pdfSummaryModel ({
+
+          user_id : userId,
+          original_file_url: fileObject?.ufsUrl,
+          summary_text: summary,
+          status: "Completed",
+          title: "pdfffffff",
+          file_name: fileObject?.name
+     })
+
+     await NewSummary.save()
+
+
+    } catch (error) {
+      console.error(error)
+      return NextResponse.json({message:"Error while saving pdf in db"}, {status: 500})
+    }
+     
+     
 
     return {
       success: true,

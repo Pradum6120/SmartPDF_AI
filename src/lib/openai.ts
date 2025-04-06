@@ -21,8 +21,9 @@ export async function generateSummeryFromOpenAI(pdfText: string) {
     });
     return response.choices[0].message.content;
 } catch(error: any){
+    console.log("openai failed")
     if(error?.status === 429){
-       throw new Error('Rate_Limit-exceeded')
+       throw new Error('RATE_LIMIT_EXCEEDED')
     }
    throw error;
 } 
