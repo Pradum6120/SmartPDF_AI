@@ -81,15 +81,19 @@ export default function UploadForm() {
       className="flex flex-col gap-4 w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow-lg"
     >
       <h2 className="text-2xl font-bold text-center">Upload PDF</h2>
-      <input
-        type="file"
-        accept=".pdf"
-        className="border border-gray-300 p-2 rounded"
-        onChange={handleFileChange}
-      />
+      <div className="inline-block rounded-lg bg-gradient-to-r from-blue-500 via-pink-500 to-purple-500 p-[2px]">
+  <input
+    type="file"
+    accept=".pdf"
+    onChange={handleFileChange}
+    placeholder="📄 Upload your PDF..."
+    className="bg-white text-gray-700 rounded-lg p-2 w-full focus:outline-none"
+  />
+</div>
+
       <button
         type="submit"
-        className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition duration-200"
+        className="px-6 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-500 via-pink-500 to-red-500 hover:opacity-90 transition-all duration-300"
       >
         Upload
       </button>

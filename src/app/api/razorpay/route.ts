@@ -27,6 +27,9 @@ export async function POST(request: NextRequest){
 
         })
 
+        return NextResponse.json({orderId: order.id}, {status: 200})
+
+
         // storing data in db
 
 

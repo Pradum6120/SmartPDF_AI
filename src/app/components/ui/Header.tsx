@@ -4,8 +4,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import {
   SignInButton,
   SignUpButton,
-  SignedIn,
-  SignedOut,
   UserButton,
 } from "@clerk/nextjs";
 export default async function Header() {
@@ -13,24 +11,29 @@ export default async function Header() {
   return (
     <nav className="flex justify-between items-center p-2 lg:px-20 w-[93%] h-[55px] lg:h-[70px] lg:w-[80%] mx-auto border border-black ">
       <div>
-        <h3 className=" text-blue-500  lg:text-3xl">SmartPDF AI</h3>
+      <h3 className="lg:text-3xl font-bold bg-gradient-to-r from-blue-500 via-pink-500 to-red-500 text-transparent bg-clip-text">
+  SmartPDFAI
+</h3>
+
       </div>
 
       <div className="flex gap-4">
         <div>
           <Link href="/">
-            <h4 className="text-xs hover:text-blue-400">Home</h4>
+            <h4 className="text-[15px] hover: bg-gradient-to-r from-blue-500 via-pink-500 to-red-500 hover:text-transparent hover: bg-clip-text">Home</h4>
           </Link>
         </div>
 
         <div>
-          <h4 className="text-xs">Summeries</h4>
+        <h4 className="text-[15px] hover: bg-gradient-to-r from-blue-500 via-pink-500 to-red-500 hover:text-transparent hover: bg-clip-text">Summeries</h4>
         </div>
       </div>
       <div>
         <Link href="/uploadpdf">
-          <h4 className="text-xs hover:text-blue-400">Uplaod Pdf</h4>
+        <h4 className="text-[15px] hover: bg-gradient-to-r from-blue-500 via-pink-500 to-red-500 hover:text-transparent hover: bg-clip-text">Upload Pdf</h4>
         </Link>
+        
+
       </div>
       {User ? (
         <div className="h-8 w-8 ">
@@ -38,7 +41,7 @@ export default async function Header() {
         </div>
       ) : (
         <div className="flex justify-around gap-2.5">
-          <button className="w-20 h-9 bg-blue-300" >
+          <button className="" >
           <SignUpButton/>
           </button>
           

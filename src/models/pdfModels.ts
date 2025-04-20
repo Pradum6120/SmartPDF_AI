@@ -33,5 +33,5 @@ const PdfSummarySchema = new Schema<IPdfSummary>({
 const pdfSummaryModel = mongoose.models.PdfSummary as mongoose.Model<IPdfSummary> || mongoose.model<IPdfSummary>("PdfSummary" ,PdfSummarySchema)
 
 
-export default  pdfSummaryModel
+export default pdfSummaryModel
 

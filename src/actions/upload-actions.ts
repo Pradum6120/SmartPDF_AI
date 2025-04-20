@@ -33,6 +33,15 @@ export default async function generatePDFSummery(uploadResponse: any[]) {
   const fileName = fileObject?.name;
   const pdfUrl = fileObject?.ufsUrl;
 
+  const nameOnly = fileName.replace(/\.pdf$/i, '');
+
+  
+  console.log("fileName",fileName);
+  console.log("filename", nameOnly);
+
+
+
+
   if (!pdfUrl) {
     return {
       success: false,
@@ -84,7 +93,7 @@ export default async function generatePDFSummery(uploadResponse: any[]) {
     try {
     await connectToDatabase() 
      const { userId } = await auth()
-     console.log('userid typessss' ,typeof(userId))
+     console.log('userid typessss' , typeof(userId))
 
      if(!userId){
            return {
@@ -98,8 +107,8 @@ export default async function generatePDFSummery(uploadResponse: any[]) {
           original_file_url: fileObject?.ufsUrl,
           summary_text: summary,
           status: "Completed",
-          title: "pdfffffff",
-          file_name: fileObject?.name
+          title: nameOnly, 
+          file_name: fileName
      })
 
      await NewSummary.save()
@@ -115,7 +124,7 @@ export default async function generatePDFSummery(uploadResponse: any[]) {
     return {
       success: true,
       message: "File uploaded successfully",
-      data: { userId, fileName, summary },
+      data: { userId, fileName,nameOnly, summary },
     };
   } catch (err) {
     console.error("Error processing PDF:", err);
