@@ -48,29 +48,30 @@ import { useState } from 'react'
  
 
   return (
-    <div className=' h-screen w-screen'>
+    <div className='min-h-screen lg:h-screen :lg:w-screen'>
 
     
-    <div className='flex justify-between items-start mt-11 p-6 mx-auto w-[80%]'>
-     <div className=' flex flex-col gap-3'>
-        <h1 className='text-4xl'>Your Summaries</h1>
-        <p className='text-xl font-light leading-3'>Transform your PDFs Into concise actionable insights</p>
+    <div className='flex justify-between items-start mt-5 lg:mt-11 p-6 mx-auto w-screen'>
+      <div className='flex justify-around gap-2 w-[100%]'>
+     <div className=' flex flex-col gap-3 w-[60%]'>
+        <h1 className='text-[25px] font-bold lg:text-4xl'>Your Summaries</h1>
      </div>
-     <div className='flex justify-center items-center'>
-        <button className='h-[50px] w-[170px] bg-blue-100 rounded-2xl'> <span className='text-2xl'> +  </span>     New Summary</button>
-
-
-     </div>
+     <div className='flex justify-center items-center w-[30%]'>
+        <button className=' h-[30px] w-[130px] text-xs rounded-sm lg:h-[50px] lg:w-[170px] bg-blue-100 lg:rounded-2xl font-sans'> + New Summary</button>
+     </div> 
+     </div> 
     </div>
 
-    <div className='w-[60%] bg-amber-100 mx-auto mt-2 h-12 border border-amber-400 rounded-xl p-2 flex justify-center items-center '>
-       <h3>You've reached limit of 5 uploads on the Basic plan. <Link href={"/"} className='font-bold'>Click here to upgrade to Pro -> </Link>For unlimited uploads</h3>
+    <div className='w-[82%] h-8 p-6 lg:w-[60%] lg:h-12 bg-amber-100 mx-auto mt-2 border border-amber-400 rounded-xl lg:p-2 flex flex-col justify-center items-center '>
+       <h3 className='text-xs'>You've reached limit of 5 uploads on the Basic plan.</h3>
+          <Link href={"/"} className='font-bold text-xs'> Click here to upgrade to Pro -> <span className='font-normal'>For unlimited uploads</span></Link> 
     </div>
-    <div className='p-5  w-[60%] gap-6 flex flex-wrap justify-around items-center mt-4'>
-      {summaries.map((summarie)=><Box title ={summarie.title}  description = {summarie.summary_text}  date = {summarie.updatedAt}/>)}
+   <div className='p-5  gap-6 flex flex-wrap justify-around items-center mt-4'>
+      {summaries.map((summarie)=><Box   id = {summarie._id}   title ={summarie.title}  description = {summarie.summary_text}  date = {summarie.updatedAt}/>)}
     
     
     </div>
+
      
     </div>
   )

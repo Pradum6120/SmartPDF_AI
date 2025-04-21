@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 
 const generatedSignature = (orderId: string, paymentId: string) => {
-  const keySecret = process.env.KEY_SECRET!;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET!;
   return crypto
     .createHmac('sha256', keySecret)
     .update(orderId + '|' + paymentId)
@@ -11,6 +11,7 @@ const generatedSignature = (orderId: string, paymentId: string) => {
 
 export async function POST(request: NextRequest) {
   const { orderCreationId, razorpayPaymentId, razorpaySignature } = await request.json();
+  console.log("weebhook run orderCreationId", orderCreationId);
 
   const signature = generatedSignature(orderCreationId, razorpayPaymentId);
 

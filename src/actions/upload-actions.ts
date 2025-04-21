@@ -1,4 +1,4 @@
-"use server";
+'use server'
 
 import { fetchAndExtractPdfText } from "@/lib/langchain";
 import { generateSummeryFromOpenAI } from "@/lib/openai";
@@ -52,7 +52,7 @@ export default async function generatePDFSummery(uploadResponse: any[]) {
 
   try {
     
-    // Extract Pdf Using LangChain 
+    // Extract Pdf Using LangChain
     const pdfText = await fetchAndExtractPdfText(pdfUrl);
     console.log("Extracted pdf text", pdfText)
    

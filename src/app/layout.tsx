@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "./components/ui/Header";
 import { ClerkProvider } from '@clerk/nextjs'
 import Script from "next/script";
-
+import { ToastContainer, toast } from 'react-toastify';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,6 +34,7 @@ export default function RootLayout({
         <Header/>
         <Script src="https://checkout.razorpay.com/v1/checkout.js"/>
         {children}
+        <ToastContainer />
       </body>
     </html>
     </ClerkProvider>

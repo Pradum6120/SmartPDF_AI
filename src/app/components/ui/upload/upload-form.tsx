@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
 import generatePDFSummery from "@/actions/upload-actions";
+import { toast } from 'react-toastify';
 
 
 const uploadSchema = z.object({
@@ -23,13 +24,16 @@ export default function UploadForm() {
 
   const { startUpload } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
-      alert("uploaded successfully!");
+    toast.success("upload successful !", {
+  theme: "colored"
+})
     },
     onUploadError: () => {
-      alert("error occurred while uploading");
+    toast.error("error occurred while uploading")
     },
     onUploadBegin: ({ file }) => {
-      alert("upload has begun for", file);
+      toast("upload has begun for", file);
+      //alert("upload has begun for", file);
     },
   });
 
@@ -43,9 +47,8 @@ export default function UploadForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     // Handle file upload logic here
     event.preventDefault();
-    console.log("submitted");
     if (!selectedFile) {
-      console.log("no file is selected");
+      toast.warn("no file is selected")
 
       // toaster space
     }
@@ -55,6 +58,7 @@ export default function UploadForm() {
     const validateFields = uploadSchema.safeParse({ file: selectedFile! }); // success or error
 
     if (!validateFields.success) {
+      toast.warn("Invalid File")
       console.log(
         validateFields.error.flatten().fieldErrors.file?.[0] ?? "Invalid file"
       );
